@@ -137,61 +137,166 @@ if (document.readyState !== "loading") {
 }
 
 function initializeCode() {
-  function getData() {
-    return _getData.apply(this, arguments);
-  }
+  return _initializeCode.apply(this, arguments);
+}
 
-  function _getData() {
-    _getData = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var url, dataPromise, dataJSON;
-      return _regeneratorRuntime().wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              url = "https://geo.stat.fi/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&typeName=tilastointialueet:kunta4500k&outputFormat=json&srsName=EPSG:4326";
-              _context.next = 3;
-              return fetch(url);
+function _initializeCode() {
+  _initializeCode = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+    var getData, _getData, initMap, getPositive, _getPositive, positiveArray, getNegative, _getNegative, negativeArray, getFeature;
 
-            case 3:
-              dataPromise = _context.sent;
-              _context.next = 6;
-              return dataPromise.json();
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _getNegative = function _getNegative3() {
+              _getNegative = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+                var url, negativePromise, negativeJSON, negativeArray;
+                return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+                  while (1) {
+                    switch (_context3.prev = _context3.next) {
+                      case 0:
+                        url = "https://statfin.stat.fi/PxWeb/sq/944493ca-ea4d-4fd9-a75c-4975192f7b6e";
+                        _context3.next = 3;
+                        return fetch(url);
 
-            case 6:
-              dataJSON = _context.sent;
-              initMap(dataJSON);
+                      case 3:
+                        negativePromise = _context3.sent;
+                        _context3.next = 6;
+                        return negativePromise.json();
 
-            case 8:
-            case "end":
-              return _context.stop();
-          }
+                      case 6:
+                        negativeJSON = _context3.sent;
+                        negativeArray = Object.values(negativeJSON.dataset.value);
+                        return _context3.abrupt("return", negativeArray);
+
+                      case 9:
+                      case "end":
+                        return _context3.stop();
+                    }
+                  }
+                }, _callee3);
+              }));
+              return _getNegative.apply(this, arguments);
+            };
+
+            getNegative = function _getNegative2() {
+              return _getNegative.apply(this, arguments);
+            };
+
+            _getPositive = function _getPositive3() {
+              _getPositive = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+                var url, positivePromise, positiveJSON, positiveArray;
+                return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+                  while (1) {
+                    switch (_context2.prev = _context2.next) {
+                      case 0:
+                        url = "https://statfin.stat.fi/PxWeb/sq/4bb2c735-1dc3-4c5e-bde7-2165df85e65f";
+                        _context2.next = 3;
+                        return fetch(url);
+
+                      case 3:
+                        positivePromise = _context2.sent;
+                        _context2.next = 6;
+                        return positivePromise.json();
+
+                      case 6:
+                        positiveJSON = _context2.sent;
+                        positiveArray = Object.values(positiveJSON.dataset.value);
+                        return _context2.abrupt("return", positiveArray);
+
+                      case 9:
+                      case "end":
+                        return _context2.stop();
+                    }
+                  }
+                }, _callee2);
+              }));
+              return _getPositive.apply(this, arguments);
+            };
+
+            getPositive = function _getPositive2() {
+              return _getPositive.apply(this, arguments);
+            };
+
+            _getData = function _getData3() {
+              _getData = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+                var url, dataPromise, dataJSON;
+                return _regeneratorRuntime().wrap(function _callee$(_context) {
+                  while (1) {
+                    switch (_context.prev = _context.next) {
+                      case 0:
+                        url = "https://geo.stat.fi/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&typeName=tilastointialueet:kunta4500k&outputFormat=json&srsName=EPSG:4326";
+                        _context.next = 3;
+                        return fetch(url);
+
+                      case 3:
+                        dataPromise = _context.sent;
+                        _context.next = 6;
+                        return dataPromise.json();
+
+                      case 6:
+                        dataJSON = _context.sent;
+                        initMap(dataJSON);
+
+                      case 8:
+                      case "end":
+                        return _context.stop();
+                    }
+                  }
+                }, _callee);
+              }));
+              return _getData.apply(this, arguments);
+            };
+
+            getData = function _getData2() {
+              return _getData.apply(this, arguments);
+            };
+
+            initMap = function initMap(data) {
+              var map = L.map("map", {
+                minZoom: -3
+              });
+              getNegative();
+              var geoJson = L.geoJSON(data, {
+                onEachFeature: getFeature,
+                weight: 2
+              }).addTo(map);
+              var osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                maxZoom: 19,
+                attribution: "© OpenStreetMap"
+              }).addTo(map);
+              map.fitBounds(geoJson.getBounds());
+            };
+
+            _context4.next = 9;
+            return getPositive();
+
+          case 9:
+            positiveArray = _context4.sent;
+            _context4.next = 12;
+            return getNegative();
+
+          case 12:
+            negativeArray = _context4.sent;
+
+            getFeature = function getFeature(feature, layer) {
+              if (!feature) return;
+              var id = feature.id.split("."); //stackoverflow convert string to array
+
+              layer.bindTooltip(feature.properties.name);
+              layer.bindPopup("<ul>\n          <li>Name: ".concat(feature.properties.name, "</li>\n          <li>Positive migration: ").concat(positiveArray[id[1]], "</li>\n          <li>Negative migration: ").concat(negativeArray[id[1]], "</li>\n      </ul>"));
+            };
+
+            getData();
+
+          case 15:
+          case "end":
+            return _context4.stop();
         }
-      }, _callee);
-    }));
-    return _getData.apply(this, arguments);
-  }
-
-  var initMap = function initMap(data) {
-    var map = L.map("map", {
-      minZoom: -3
-    });
-    var geoJson = L.geoJSON(data, {
-      onEachFeature: getFeature,
-      weight: 2
-    }).addTo(map);
-    var osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: "© OpenStreetMap"
-    }).addTo(map);
-    map.fitBounds(geoJson.getBounds());
-  };
-
-  var getFeature = function getFeature(feature, layer) {
-    if (!feature) return;
-    layer.bindTooltip(feature.properties.name);
-  };
-
-  getData();
+      }
+    }, _callee4);
+  }));
+  return _initializeCode.apply(this, arguments);
 }
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
