@@ -159,9 +159,10 @@ function initializeCode() {
 
             case 6:
               dataJSON = _context.sent;
+              console.log(dataJSON);
               initMap(dataJSON);
 
-            case 8:
+            case 9:
             case "end":
               return _context.stop();
           }
@@ -176,6 +177,7 @@ function initializeCode() {
       minZoom: -3
     });
     var geoJson = L.geoJSON(data, {
+      onEachFeature: getFeature,
       weight: 2
     }).addTo(map);
     var osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -183,6 +185,11 @@ function initializeCode() {
       attribution: "© OpenStreetMap"
     }).addTo(map);
     map.fitBounds(geoJson.getBounds());
+  };
+
+  var getFeature = function getFeature(feature, layer) {
+    if (!feature) return;
+    layer.bindTooltip(feature.properties.name);
   };
 
   getData();
