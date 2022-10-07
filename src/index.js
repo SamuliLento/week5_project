@@ -14,7 +14,6 @@ function initializeCode() {
       "https://geo.stat.fi/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&typeName=tilastointialueet:kunta4500k&outputFormat=json&srsName=EPSG:4326";
     const dataPromise = await fetch(url);
     const dataJSON = await dataPromise.json();
-    console.log(dataJSON);
 
     initMap(dataJSON);
   }

@@ -159,10 +159,9 @@ function initializeCode() {
 
             case 6:
               dataJSON = _context.sent;
-              console.log(dataJSON);
               initMap(dataJSON);
 
-            case 9:
+            case 8:
             case "end":
               return _context.stop();
           }
